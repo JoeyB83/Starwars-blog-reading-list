@@ -1,44 +1,62 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			demo: [
-				{
-					title: "FIRST",
-					background: "white",
-					initial: "white"
-				},
-				{
-					title: "SECOND",
-					background: "white",
-					initial: "white"
-				}
-			]
+			baseURL: "https://swapi.dev/api/",
+			baseImgUrl: "https://starwars-visualguide.com/assets/img/",
+			characters: [],
+			favorites: [],
+			singleCharacter: [],
+			detailCharacter: []
+			
+			
 		},
 		actions: {
-			// Use getActions to call a function within a fuction
-			exampleFunction: () => {
-				getActions().changeColor(0, "green");
+			getCharacters: () => {
+				fetch(getStore().baseURL + 'people')
+				.then((res) => res.json())
+				.then((data) => setStore({characters:data.results}))				
+				.catch((error) => console.log(error));
 			},
-			loadSomeData: () => {
-				/**
-					fetch().then().then(data => setStore({ "foo": data.bar }))
-				*/
+			addFavorites: (favorite) => {
+				const newFavorites = getStore().favorites
+				newFavorites.push(favorite)
+				setStore({favorites: newFavorites})
 			},
-			changeColor: (index, color) => {
-				//get the store
-				const store = getStore();
-
-				//we have to loop the entire demo array to look for the respective index
-				//and change its color
-				const demo = store.demo.map((elm, i) => {
-					if (i === index) elm.background = color;
-					return elm;
-				});
-
-				//reset the global store
-				setStore({ demo: demo });
+			getSingleCharacter: (characterURL) => {
+				fetch(characterURL)
+				.then(resp => resp.json())
+				.then(data => {
+					setStore({singleCharacter: data})
+					console.log("Resultado:", data)					
+				})					
+				.catch((error) => console.log(error));
+			},
+			// getSingleCharacter: (characterURL) => {
+			// 	const {singleCharacter} = getStore()
+			// 	fetch(characterURL)
+			// 	.then(resp => resp.json())
+			// 	.then(data => {
+			// 		setStore({singleCharacter: {...data.result.properties, singleCharacter}})
+			// 		console.log("Resultado:", data.result.properties)					
+			// 	})					
+			// 	.catch((error) => console.log(error));
+			// },
+			// getDetailCharacter: (uid) => {
+			// 	fetch(getStore().baseURL + `people/${uid}`)
+			// 	.then(resp => resp.json())
+			// 	.then(data => {
+			// 		setStore({singleCharacterDetail: data.result})					
+			// 	})					
+			// 	.catch((error) => console.log(error));
+			// },
+			deleteSingleCharacter: (favoriteIndex) => {
+				setStore({
+					favorites: getStore().favorites.filter(
+					(favorite, index) => index !== favoriteIndex
+					),
+				});				
 			}
-		}
+		}		
 	};
 };
 
