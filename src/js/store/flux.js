@@ -4,8 +4,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 			baseURL: "https://swapi.dev/api/",
 			baseImgUrl: "https://starwars-visualguide.com/assets/img/",
 			characters: [],
+			planets: [],
+			starships: [],
 			favorites: [],
 			singleCharacter: [],
+			singlePlanet: [],
+			singleStarship: [],
 			detailCharacter: []
 			
 			
@@ -17,6 +21,18 @@ const getState = ({ getStore, getActions, setStore }) => {
 				.then((data) => setStore({characters:data.results}))				
 				.catch((error) => console.log(error));
 			},
+			getPlanets: () => {
+				fetch(getStore().baseURL + 'planets')
+				.then((res) => res.json())
+				.then((data) => setStore({planets:data.results}))				
+				.catch((error) => console.log(error));
+			},
+			getShips: () => {
+				fetch(getStore().baseURL + 'starships')
+				.then((res) => res.json())
+				.then((data) => setStore({starships:data.results}))				
+				.catch((error) => console.log(error));
+			},	
 			addFavorites: (favorite) => {
 				const newFavorites = getStore().favorites
 				newFavorites.push(favorite)
@@ -31,24 +47,24 @@ const getState = ({ getStore, getActions, setStore }) => {
 				})					
 				.catch((error) => console.log(error));
 			},
-			// getSingleCharacter: (characterURL) => {
-			// 	const {singleCharacter} = getStore()
-			// 	fetch(characterURL)
-			// 	.then(resp => resp.json())
-			// 	.then(data => {
-			// 		setStore({singleCharacter: {...data.result.properties, singleCharacter}})
-			// 		console.log("Resultado:", data.result.properties)					
-			// 	})					
-			// 	.catch((error) => console.log(error));
-			// },
-			// getDetailCharacter: (uid) => {
-			// 	fetch(getStore().baseURL + `people/${uid}`)
-			// 	.then(resp => resp.json())
-			// 	.then(data => {
-			// 		setStore({singleCharacterDetail: data.result})					
-			// 	})					
-			// 	.catch((error) => console.log(error));
-			// },
+			getSinglePlanet: (planetURL) => {
+				fetch(planetURL)
+				.then(resp => resp.json())
+				.then(data => {
+					setStore({singlePlanet: data})
+					console.log("Resultado:", data)					
+				})					
+				.catch((error) => console.log(error));
+			},
+			getSingleShip: (shipURL) => {
+				fetch(shipURL)
+				.then(resp => resp.json())
+				.then(data => {
+					setStore({singleStarship: data})
+					console.log("Resultado:", data)					
+				})					
+				.catch((error) => console.log(error));
+			},												
 			deleteSingleCharacter: (favoriteIndex) => {
 				setStore({
 					favorites: getStore().favorites.filter(

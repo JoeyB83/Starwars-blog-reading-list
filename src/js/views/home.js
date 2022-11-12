@@ -3,6 +3,8 @@ import "../../styles/home.css";
 import { Context } from "../store/appContext";
 import { useHistory } from "react-router-dom";
 import { CharacterCards } from "../component/characterCards";
+import { PlanetCards } from "../component/planetCards";
+import { ShipCards } from "../component/shipCards";
 
 export const Home = () => {
 	const{store, actions} = useContext(Context)	
@@ -12,8 +14,16 @@ export const Home = () => {
 		<div>
 			<h1 className="text-danger">Characters</h1>
 			<div>
-				<CharacterCards />
+				<CharacterCards />				
 		    </div>
+			<h1 className="text-danger">Planets</h1>
+			<div>
+				<PlanetCards />
+			</div>
+			<h1 className="text-danger">Starships</h1>
+			<div>
+				<ShipCards />
+			</div>
 		</div>
 		
 

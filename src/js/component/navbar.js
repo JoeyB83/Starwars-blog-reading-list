@@ -17,11 +17,12 @@ export const Navbar = () => {
 			</Link>
 			<div className="ml-auto">
 				<div className="dropdown">
-					<button className="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                     Favorites
+					<button className="btn btn-primary dropdown-toggle d-flex" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                     Favorites<div className="drp counter bg-secondary rounded px-2">{store.favorites.length}</div>
                     </button>
 					<ul className="dropdown-menu dropdown-menu-end">
-						{store.favorites.map((favorite, index) => {
+						{store.favorites.length == 0 ? <p className = "text-center fw-bold">(Empty)</p>:(
+						store.favorites.map((favorite, index) => {
 							return(
 								<li key={index} className="d-flex justify-content-between">
 									<a className="dropdown-item" onClick={() => {
@@ -33,7 +34,8 @@ export const Navbar = () => {
 									<button className="btn" onClick={() => actions.deleteSingleCharacter(index)}><i className="fas fa-trash"></i></button>
 								</li>
 							)
-						})}						                        
+						})						                        
+						)}
                     </ul>
                 </div>									
 			</div>
